@@ -1,0 +1,53 @@
+﻿@model List<DataIntegrationHub.Business.Entities.Plan>
+@{
+    var plans = Model;
+}
+
+<script type="text/javascript">
+    function new_OnClick() {
+        window.location = "/Home/Plans";
+    }
+
+    function goal_OnClick(id) {
+        window.location = "/Home/Plan?id=" + id;
+    }
+</script>
+
+<div class="row" style="padding: 15px">
+
+    <div style="padding-bottom:8px;float:left;width:100%;">
+        <h1>Plan Metrics</h1>
+    </div>
+
+    <div style="padding-bottom:8px;float:left;width:100%;">
+        <div style="float:left;">
+            <button class="input-button" onclick="new_OnClick()">New</button>
+        </div>
+        <div style="float:right;">
+            <span>Search:</span>
+            <input type="text" />
+        </div>
+    </div>
+
+    <table class="data-table">
+        <tr class="data-table-header">
+            <td class="data-table-header-cell">Name</td>
+            <td class="data-table-header-cell">Type</td>
+            <td class="data-table-header-cell">Inception Date</td>
+            <td class="data-table-header-cell">Description</td>
+        </tr>
+        @foreach (var plan in plans)
+        {
+            <tr class="data-table-row" onclick="goal_OnClick('@plan.PlanId.ToString()')">
+                <td>@plan.Name</td>
+                <td>@plan.Type</td>
+                @if (plan.InceptionDate != null) {
+                    <td>@(((DateTime)plan.InceptionDate).ToString("MM/dd/yyyy"))</td>
+                } else {
+                    <td>-</td>
+                }
+                <td>@plan.Description</td>
+            </tr>
+        }
+    </table>
+</div>

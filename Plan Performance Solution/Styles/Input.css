@@ -1,0 +1,23 @@
+﻿.input-button {
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    padding: 3px 15px;
+    background-color: #eeeded;
+    min-width: 75px;
+}
+
+.input-button:hover {
+    background-color: #e0dede;
+}
+
+.input-label {
+    min-width: 150px;
+}
+
+.input-text {
+    min-width: 400px;
+}
+
+.input-drop-down-list {
+    width: 400px;
+}

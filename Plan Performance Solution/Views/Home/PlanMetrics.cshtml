@@ -1,0 +1,51 @@
+﻿@model List<PlanPerformance.Business.Entities.PlanMetric>
+@{
+    var planMetrics = Model;
+    var goals = PlanPerformance.Business.Entities.Goal.Get();
+    var plans = DataIntegrationHub.Business.Entities.Plan.Get();
+}
+
+<script type="text/javascript">
+    function new_OnClick() {
+        window.location = "/Home/PlanMetric";
+    }
+
+    function goal_OnClick(id) {
+        window.location = "/Home/PlanMetric?id=" + id;
+    }
+</script>
+
+<div class="row" style="padding: 15px">
+
+    <div style="padding-bottom:8px;float:left;width:100%;">
+        <h1>Plan Metrics</h1>
+    </div>
+
+    <div style="padding-bottom:8px;float:left;width:100%;">
+        <div style="float:left;">
+            <button class="input-button" onclick="new_OnClick()">New</button>
+        </div>
+        <div style="float:right;">
+            <span>Search:</span>
+            <input type="text" />
+        </div>
+    </div>
+
+    <table class="data-table">
+        <tr class="data-table-header">
+            <td class="data-table-header-cell">Name</td>
+            <td class="data-table-header-cell">Type</td>
+            <td class="data-table-header-cell">Team</td>
+            <td class="data-table-header-cell">Frequency</td>
+        </tr>
+        @foreach (var planMetric in planMetrics)
+        {
+            <tr class="data-table-row" onclick="goal_OnClick('@planMetric.Id.ToString()')">
+                <td>@goals.Find(x => x.Id == planMetric.GoalId).Name</td>
+                <td>@plans.Find(x => x.PlanId == planMetric.PlanId).Name</td>
+                <td>@planMetric.Value</td>
+                <td>@planMetric.ValueAsOf</td>
+            </tr>
+        }
+    </table>
+</div>

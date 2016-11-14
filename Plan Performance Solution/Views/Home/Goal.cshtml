@@ -1,0 +1,58 @@
+﻿@model PlanPerformance.Business.Entities.Goal
+@{
+    var goal = Model;
+}
+
+<script type="text/javascript">
+    function goToGoals() {
+        window.location = "/Home/Goals";
+    }
+
+    function deleteGoal(id) {
+        window.location = "/Home/DeleteGoal?id=" + id;
+    }
+</script>
+
+<div class="row" style="padding: 0px 15px">
+
+    <div style="padding-bottom:8px;float:left;width:100%;">
+        @if (goal.ExistingRecord == false) {
+            <h1>New Goal</h1>
+        }
+        else
+        {
+            <h1>@goal.Name</h1>
+        }
+    </div>
+
+    @using (Html.BeginForm("SaveGoal", "Home", FormMethod.Post, new { @style = "display:inline;" }))
+    {
+        @Html.Hidden("goal-existing-record", goal.ExistingRecord);
+        @Html.Hidden("goal-id", goal.Id);
+        <label class="input-label">Name</label>
+        @Html.TextBox("goal-name", goal.Name, new { @class = "input-text" });
+        <br />
+        <label class="input-label">Team</label>
+        @Html.TextBox("goal-team", goal.Team, new { @class = "input-text" });
+        <br />
+        <label class="input-label">Type</label>
+        @Html.TextBox("goal-type", goal.Type, new { @class = "input-text" });
+        <br />
+        <label class="input-label">Frequency</label>
+        @Html.TextBox("goal-frequency", goal.Frequency, new { @class = "input-text" });
+
+        <div style="padding-top:15px;" />
+
+        <button class="input-button">Save</button>
+    }
+
+    @using (Html.BeginForm("DeleteGoal", "Home", FormMethod.Post, new { @style = "display:inline;" }))
+    {
+        @Html.Hidden("goal-id", goal.Id);
+        <button class="input-button">Delete</button>
+    }
+    @using (Html.BeginForm("Goals", "Home", FormMethod.Get, new { @style = "display:inline;" }))
+    {
+        <button class="input-button" onclick="goToGoals()">Cancel</button>
+    }
+</div>

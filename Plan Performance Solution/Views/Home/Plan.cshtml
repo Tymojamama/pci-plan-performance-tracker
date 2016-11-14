@@ -1,0 +1,82 @@
+﻿@model DataIntegrationHub.Business.Entities.Plan
+@{
+    var plan = Model;
+    var planMetrics = PlanPerformance.Business.Entities.PlanMetric.Get().FindAll(x => x.PlanId == plan.PlanId);
+    var goals = PlanPerformance.Business.Entities.Goal.Get();
+    var plans = DataIntegrationHub.Business.Entities.Plan.Get();
+}
+
+<script type="text/javascript">
+    function newPlanMetric_OnClick(planId) {
+        window.location = "/Home/PlanMetric?planId=" + planId;
+    }
+
+    function planMetric_OnClick(id, planId) {
+        window.location = "/Home/PlanMetric?id=" + id + "&planId=" + planId;
+    }
+</script>
+
+<div class="row" style="padding: 0px 15px">
+
+    <div style="padding-bottom:8px;float:left;width:100%;">
+        <h1>@plan.Name</h1>
+    </div>
+
+    @using (Html.BeginForm("SavePlanMetric", "Home", FormMethod.Post, new { @style = "display:inline;" }))
+    {
+        @Html.Hidden("plan-id", plan.PlanId);
+        <label class="input-label">Name</label>
+        <input class="input-text" type="text" value="@plan.Name" disabled />
+        <br />
+        <label class="input-label">Type</label>
+        <input class="input-text" type="text" value="@plan.Type" disabled />
+        <br />
+        <label class="input-label">Inception Date</label>
+        <input class="input-text" type="text" value="@plan.InceptionDate" disabled />
+        <br />
+        <label class="input-label">Description</label>
+        <input class="input-text" type="text" value="@plan.Description" disabled />
+
+        <div style="padding-top:15px;" />
+    }
+
+    @using (Html.BeginForm("Plans", "Home", FormMethod.Get, new { @style = "display:inline;" }))
+    {
+        <button class="input-button">Cancel</button>
+    }
+</div>
+
+<div class="row" style="padding: 15px">
+
+    <div style="padding-bottom:8px;float:left;width:100%;">
+        <h3>Plan Metrics</h3>
+    </div>
+
+    <div style="padding-bottom:8px;float:left;width:100%;">
+        <div style="float:left;">
+            <button class="input-button" onclick="newPlanMetric_OnClick('@plan.PlanId')">New</button>
+        </div>
+        <div style="float:right;">
+            <span>Search:</span>
+            <input type="text" />
+        </div>
+    </div>
+
+    <table class="data-table">
+        <tr class="data-table-header">
+            <td class="data-table-header-cell">Goal</td>
+            <td class="data-table-header-cell">Plan</td>
+            <td class="data-table-header-cell">Value</td>
+            <td class="data-table-header-cell">Value As Of</td>
+        </tr>
+        @foreach (var planMetric in planMetrics)
+        {
+            <tr class="data-table-row" onclick="planMetric_OnClick('@planMetric.Id.ToString()','@plan.PlanId.ToString()')">
+                <td>@goals.Find(x => x.Id == planMetric.GoalId).Name</td>
+                <td>@plans.Find(x => x.PlanId == planMetric.PlanId).Name</td>
+                <td>@planMetric.Value</td>
+                <td>@planMetric.ValueAsOf</td>
+            </tr>
+        }
+    </table>
+</div>

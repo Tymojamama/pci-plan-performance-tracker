@@ -1,0 +1,27 @@
+﻿.data-table {
+    border: 1px solid #808080;
+    border-radius: 3px;
+    width: 100%;
+}
+
+.data-table-header {
+    background-color: #ccc;
+    font-weight: 600;
+}
+
+.data-table-header-cell {
+    cursor: pointer;
+    border-bottom: 1px solid #808080;
+}
+
+.data-table-header-cell:hover {
+    background-color: #e0dede;
+}
+
+.data-table-row {
+
+}
+
+.data-table-row:hover {
+    background-color: #eeeded;
+}
