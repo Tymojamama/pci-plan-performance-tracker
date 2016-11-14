@@ -13,7 +13,7 @@ namespace PlanPerformance.Business.Components
         /// <summary>
         /// Represents a database connection to the production database.
         /// </summary>
-        public static DataAccessComponent DbAccess = new DataAccessComponent(DataAccessComponent.Connections.PCIDB_PlanPerformance);
+        public static DataAccessComponent DbAccess = new DataAccessComponent(DataAccessComponent.Connections.PCIDB_PlanPerformance, DataAccessComponent.SecurityTypes.Impersonate);
 
         public static bool ConnectionSucceeded()
         {
