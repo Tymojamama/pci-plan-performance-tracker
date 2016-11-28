@@ -1,0 +1,92 @@
+﻿@model PlanPerformance.Business.Entities.GoalMetric
+@{
+    var goalMetric = Model;
+    var goals = PlanPerformance.Business.Entities.Goal.Get().OrderBy(x => x.Name).ToList();
+    var goalsSelectList = new List<SelectListItem>();
+    foreach (var goal in goals)
+    {
+        var selectListItem = new SelectListItem();
+        selectListItem.Value = goal.Id.ToString();
+        selectListItem.Text = goal.Name;
+        goalsSelectList.Add(selectListItem);
+    }
+    
+    var plans = DataIntegrationHub.Business.Entities.Plan.Get().OrderBy(x => x.Name).ToList();
+    var plansSelectList = new List<SelectListItem>();
+    plansSelectList.Add(new SelectListItem()
+    {
+        Value = Guid.Empty.ToString(),
+        Text = ""
+    });
+    foreach (var plan in plans)
+    {
+        var selectListItem = new SelectListItem();
+        selectListItem.Value = plan.PlanId.ToString();
+        selectListItem.Text = plan.Name;
+        plansSelectList.Add(selectListItem);
+    }
+
+    var industrySelectList = new List<SelectListItem>();
+    industrySelectList.Add(new SelectListItem()
+    {
+        Value = "",
+        Text = ""
+    });
+    var industries = new string[] { "Construction","Management of Companies","Admin Support","Wholesale Trade","Manufacturing","Retail Trade","Transportation Warehouse","Information","Finance Insurance","Professional Services","Healthcare Social Assistance" };
+    foreach (var industry in industries)
+    {
+        var selectListItem = new SelectListItem();
+        selectListItem.Value = industry;
+        selectListItem.Text = industry;
+        industrySelectList.Add(selectListItem);
+    }
+    
+}
+
+<div class="row" style="padding: 0px 15px">
+
+    <div style="padding-bottom:8px;float:left;width:100%;">
+        @if (goalMetric.ExistingRecord == false)
+        {
+            <h1>New Goal Metric</h1>
+        }
+        else
+        {
+            <h1>Existing Goal Metric</h1>
+        }
+    </div>
+
+    @using (Html.BeginForm("SaveGoalMetric", "Home", FormMethod.Post, new { @style = "display:inline;" }))
+    {
+        @Html.Hidden("goal-metric-existing-record", goalMetric.ExistingRecord);
+        @Html.Hidden("goal-metric-id", goalMetric.Id);
+        <label class="input-label">Goal</label>
+        @Html.DropDownList("goal-metric-goalid", new SelectList(goalsSelectList, "Value", "Text", goalMetric.GoalId), new { @class = "input-drop-down-list" });
+        <br />
+        <label class="input-label">Plan</label>
+        @Html.DropDownList("goal-metric-planid", new SelectList(plansSelectList, "Value", "Text", goalMetric.PlanId), new { @class = "input-drop-down-list" });
+        <br />
+        <label class="input-label">Industry</label>
+        @Html.DropDownList("goal-metric-industry", new SelectList(industrySelectList, "Value", "Text", goalMetric.Industry), new { @class = "input-drop-down-list" });
+        <br />
+        <label class="input-label">Value</label>
+        @Html.TextBox("goal-metric-value", goalMetric.Value.ToString("#,##0.00"), new { @class = "input-text" });
+        <br />
+        <label class="input-label">Value As Of</label>
+        @Html.TextBox("goal-metric-value-as-of", goalMetric.ValueAsOf.ToString("MM/dd/yyyy"), new { @class = "input-text" });
+
+        <div style="padding-top:15px;" />
+
+        <button class="input-button">Save</button>
+    }
+
+    @using (Html.BeginForm("DeleteGoalMetric", "Home", FormMethod.Post, new { @style = "display:inline;" }))
+    {
+        @Html.Hidden("goal-metric-id", goalMetric.Id);
+        <button class="input-button">Delete</button>
+    }
+    @using (Html.BeginForm("GoalMetrics", "Home", FormMethod.Get, new { @style = "display:inline;" }))
+    {
+        <button class="input-button">Cancel</button>
+    }
+</div>

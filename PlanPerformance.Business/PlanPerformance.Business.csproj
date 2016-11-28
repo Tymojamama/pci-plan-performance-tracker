@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="Components\Access.cs" />
     <Compile Include="Entities\DatabaseEntity.cs" />
+    <Compile Include="Entities\GoalMetrics.cs" />
     <Compile Include="Entities\PlanMetrics.cs" />
     <Compile Include="Entities\Goal.cs" />
     <Compile Include="Entities\IDatabaseEntity.cs" />

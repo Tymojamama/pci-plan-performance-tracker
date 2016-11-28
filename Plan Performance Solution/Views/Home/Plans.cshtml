@@ -4,10 +4,6 @@
 }
 
 <script type="text/javascript">
-    function new_OnClick() {
-        window.location = "/Home/Plans";
-    }
-
     function goal_OnClick(id) {
         window.location = "/Home/Plan?id=" + id;
     }
@@ -16,17 +12,7 @@
 <div class="row" style="padding: 15px">
 
     <div style="padding-bottom:8px;float:left;width:100%;">
-        <h1>Plan Metrics</h1>
-    </div>
-
-    <div style="padding-bottom:8px;float:left;width:100%;">
-        <div style="float:left;">
-            <button class="input-button" onclick="new_OnClick()">New</button>
-        </div>
-        <div style="float:right;">
-            <span>Search:</span>
-            <input type="text" />
-        </div>
+        <h1>Plans</h1>
     </div>
 
     <table class="data-table">

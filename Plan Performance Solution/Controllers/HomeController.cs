@@ -18,7 +18,9 @@ namespace PlanPerformance.Web.Controllers
         public ActionResult Plans()
         {
             ViewBag.Title = "Plans";
-            var plans = DataIntegrationHub.Business.Entities.Plan.Get().OrderBy(x => x.Name).ToList();
+            var plans = DataIntegrationHub.Business.Entities.Plan.Get()
+                .FindAll(x => x.IsManagedPlan)
+                .OrderBy(x => x.Name).ToList();
             return View(plans);
         }
 
@@ -37,6 +39,86 @@ namespace PlanPerformance.Web.Controllers
                 return View(plan);
             }
 
+        }
+
+        public ActionResult GoalMetrics()
+        {
+            ViewBag.Title = "Goal Metrics";
+            var goalMetrics = PlanPerformance.Business.Entities.GoalMetric.Get();
+            return View(goalMetrics);
+        }
+
+        public ActionResult GoalMetric()
+        {
+            var id = Request.QueryString["id"];
+            var goalId = Request.QueryString["goalId"];
+            var goalMetric = new PlanPerformance.Business.Entities.GoalMetric();
+
+            if (!String.IsNullOrWhiteSpace(goalId))
+            {
+                goalMetric.GoalId = Guid.Parse(goalId);
+            }
+
+            if (String.IsNullOrWhiteSpace(id))
+            {
+                ViewBag.Title = "New Plan Metric";
+                goalMetric.ValueAsOf = DateTime.Now;
+            }
+            else
+            {
+                goalMetric = new PlanPerformance.Business.Entities.GoalMetric(Guid.Parse(id));
+                //ViewBag.Title = planMetric.Name;
+            }
+
+            return View(goalMetric);
+        }
+
+        public ActionResult SaveGoalMetric(FormCollection collection)
+        {
+            var existingRecord = Boolean.Parse(collection["goal-metric-existing-record"].ToString());
+            var id = Guid.Parse(collection["goal-metric-id"].ToString());
+            var goalId = collection["goal-metric-goalid"].ToString();
+            var planId = collection["goal-metric-planid"].ToString();
+            var industry = collection["goal-metric-industry"].ToString();
+            var value = collection["goal-metric-value"].ToString();
+            var valueAsOf = collection["goal-metric-value-as-of"].ToString();
+
+            PlanPerformance.Business.Entities.GoalMetric goalMetric;
+            if (existingRecord == false)
+            {
+                goalMetric = new PlanPerformance.Business.Entities.GoalMetric();
+            }
+            else
+            {
+                goalMetric = new PlanPerformance.Business.Entities.GoalMetric(id);
+            }
+
+            goalMetric.GoalId = Guid.Parse(goalId);
+            goalMetric.PlanId = Guid.Parse(planId);
+            goalMetric.Industry = industry;
+            goalMetric.Value = Decimal.Parse(value);
+            goalMetric.ValueAsOf = DateTime.Parse(valueAsOf);
+            goalMetric.SaveRecordToDatabase(new Guid("17F6FCEB-CF02-E411-9726-D8D385C29900"));
+
+            return View();
+        }
+        
+        public ActionResult DeleteGoalMetric(FormCollection collection)
+        {
+            var id = collection["goal-metric-id"].ToString();
+            var goalMetric = new PlanPerformance.Business.Entities.GoalMetric();
+
+            if (String.IsNullOrWhiteSpace(id))
+            {
+                return View();
+            }
+            else
+            {
+                goalMetric = new PlanPerformance.Business.Entities.GoalMetric(Guid.Parse(id));
+                goalMetric.DeleteRecordFromDatabase();
+            }
+
+            return View();
         }
 
         public ActionResult PlanMetrics()

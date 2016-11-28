@@ -1,6 +1,9 @@
 ﻿@model PlanPerformance.Business.Entities.Goal
 @{
     var goal = Model;
+    var goalMetrics = PlanPerformance.Business.Entities.GoalMetric.Get().FindAll(x => x.GoalId == goal.Id);
+    var goals = PlanPerformance.Business.Entities.Goal.Get();
+    var plans = DataIntegrationHub.Business.Entities.Plan.Get();
 }
 
 <script type="text/javascript">
@@ -10,6 +13,14 @@
 
     function deleteGoal(id) {
         window.location = "/Home/DeleteGoal?id=" + id;
+    }
+
+    function newGoalMetric_OnClick(planId) {
+        window.location = "/Home/GoalMetric?goalId=" + planId;
+    }
+
+    function goalMetric_OnClick(id, planId) {
+        window.location = "/Home/GoalMetric?id=" + id + "&goalId=" + planId;
     }
 </script>
 
@@ -55,4 +66,41 @@
     {
         <button class="input-button" onclick="goToGoals()">Cancel</button>
     }
+</div>
+
+<div class="row" style="padding: 15px">
+
+    <div style="padding-bottom:8px;float:left;width:100%;">
+        <h3>Goal Metrics</h3>
+    </div>
+
+    <div style="padding-bottom:8px;float:left;width:100%;">
+        <div style="float:left;">
+            <button class="input-button" onclick="newGoalMetric_OnClick('@goal.Id')">New</button>
+        </div>
+        <div style="float:right;">
+            <span>Search:</span>
+            <input type="text" />
+        </div>
+    </div>
+
+    <table class="data-table">
+        <tr class="data-table-header">
+            <td class="data-table-header-cell">Goal</td>
+            <td class="data-table-header-cell">Plan</td>
+            <td class="data-table-header-cell">Industry</td>
+            <td class="data-table-header-cell">Value</td>
+            <td class="data-table-header-cell">Value As Of</td>
+        </tr>
+        @foreach (var goalMetric in goalMetrics)
+        {
+            <tr class="data-table-row" onclick="goalMetric_OnClick('@goalMetric.Id.ToString()','@goalMetric.GoalId.ToString()')">
+                <td>@goals.Find(x => x.Id == goalMetric.GoalId).Name</td>
+                <td>@plans.Find(x => x.PlanId == goalMetric.PlanId).Name</td>
+                <td>@goalMetric.Industry</td>
+                <td>@goalMetric.Value</td>
+                <td>@goalMetric.ValueAsOf</td>
+            </tr>
+        }
+    </table>
 </div>

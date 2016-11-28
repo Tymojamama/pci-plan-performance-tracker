@@ -43,7 +43,8 @@
       <Private>True</Private>
       <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
-    <Reference Include="DataIntegrationHub.Business">
+    <Reference Include="DataIntegrationHub.Business, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>\\PC03\Common Ground\IT\Libraries\DataIntegrationHub.Business.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
@@ -321,6 +322,10 @@
     <Content Include="Views\Home\Plans.cshtml" />
     <Content Include="Views\Home\SavePlanMetric.cshtml" />
     <Content Include="Views\Home\DeletePlanMetric.cshtml" />
+    <Content Include="Views\Home\GoalMetrics.cshtml" />
+    <Content Include="Views\Home\GoalMetric.cshtml" />
+    <Content Include="Views\Home\SaveGoalMetric.cshtml" />
+    <Content Include="Views\Home\DeleteGoalMetric.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
