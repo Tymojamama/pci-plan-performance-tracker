@@ -10,8 +10,8 @@
         selectListItem.Text = goal.Name;
         goalsSelectList.Add(selectListItem);
     }
-    
-    var plans = DataIntegrationHub.Business.Entities.Plan.Get().OrderBy(x => x.Name).ToList();
+
+    var plans = DataIntegrationHub.Business.Entities.Plan.Get().FindAll(x => x.IsManagedPlan).OrderBy(x => x.Name).ToList();
     var plansSelectList = new List<SelectListItem>();
     foreach (var plan in plans)
     {
@@ -53,7 +53,7 @@
 
         <div style="padding-top:15px;" />
 
-        <button class="input-button">Save</button>
+        <input class="input-button" type="submit" value="Save" />
     }
 
     @using (Html.BeginForm("DeletePlanMetric", "Home", FormMethod.Post, new { @style = "display:inline;" }))

@@ -2,7 +2,7 @@
 @{
     var goalMetrics = Model;
     var goals = PlanPerformance.Business.Entities.Goal.Get();
-    var plans = DataIntegrationHub.Business.Entities.Plan.Get();
+    var plans = DataIntegrationHub.Business.Entities.Plan.Get().FindAll(x => x.IsManagedPlan);
 }
 
 <script type="text/javascript">
@@ -43,7 +43,7 @@
         {
             <tr class="data-table-row" onclick="goal_OnClick('@goalMetric.Id.ToString()')">
                 <td>@goals.Find(x => x.Id == goalMetric.GoalId).Name</td>
-                @if (goalMetric.PlanId != Guid.Empty)
+                @if (plans.FindAll(x => x.PlanId == goalMetric.PlanId).Count != 0)
                 {
                     <td>@plans.Find(x => x.PlanId == goalMetric.PlanId).Name</td>
                 }
