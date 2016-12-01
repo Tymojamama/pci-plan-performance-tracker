@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.Entity;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
@@ -18,8 +21,19 @@ namespace PlanPerformance.Web
     {
         public Task SendAsync(IdentityMessage message)
         {
-            // Plug in your email service here to send an email.
-            return Task.FromResult(0);
+            var host = ConfigurationManager.AppSettings["SmtpHost"];
+            var port = int.Parse(ConfigurationManager.AppSettings["SmtpPort"]);
+
+            var username = ConfigurationManager.AppSettings["EmailUserName"];
+            var password = ConfigurationManager.AppSettings["EmailPassword"];
+            var domain = ConfigurationManager.AppSettings["EmailDomain"];
+
+            SmtpClient smtpClient = new SmtpClient(host);
+            smtpClient.Credentials = new NetworkCredential(username, password, domain);
+            smtpClient.Port = port;
+            smtpClient.EnableSsl = true;
+
+            return smtpClient.SendMailAsync(username, message.Destination, message.Subject, message.Body);
         }
     }
 
