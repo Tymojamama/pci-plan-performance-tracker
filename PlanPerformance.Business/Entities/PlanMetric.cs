@@ -15,6 +15,7 @@ namespace PlanPerformance.Business.Entities
         public Guid PlanId;
         public decimal Value;
         public DateTime ValueAsOf;
+        public bool IsBaseline;
 
         private static string _tableName = "PlanMetric";
 
@@ -40,6 +41,7 @@ namespace PlanPerformance.Business.Entities
             base.AddColumn("PlanId", this.PlanId);
             base.AddColumn("Value", this.Value);
             base.AddColumn("ValueAsOf", this.ValueAsOf);
+            base.AddColumn("IsBaseline", this.IsBaseline);
         }
 
         /// <summary>
@@ -51,6 +53,7 @@ namespace PlanPerformance.Business.Entities
             this.PlanId = (Guid)base.GetColumn("PlanId");
             this.Value = (decimal)base.GetColumn("Value");
             this.ValueAsOf = (DateTime)base.GetColumn("ValueAsOf");
+            this.IsBaseline = bool.Parse(base.GetColumn("IsBaseline").ToString());
         }
 
         public static List<PlanMetric> Get()

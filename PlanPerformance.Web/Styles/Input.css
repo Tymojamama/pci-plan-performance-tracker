@@ -18,6 +18,15 @@
     min-width: 400px;
 }
 
+.input-checkbox {
+    display: inline-block;
+    width: 19px;
+    height: 19px;
+    margin: -1px 4px 0 0;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
 .input-drop-down-list {
     width: 400px;
 }

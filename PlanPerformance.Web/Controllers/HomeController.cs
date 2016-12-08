@@ -161,6 +161,7 @@ namespace PlanPerformance.Web.Controllers
             var planId = collection["plan-metric-planid"].ToString();
             var value = collection["plan-metric-value"].ToString();
             var valueAsOf = collection["plan-metric-value-as-of"].ToString();
+            var isBaseline = collection["plan-metric-is-baseline"].ToString().Replace(",false","");
 
             PlanPerformance.Business.Entities.PlanMetric planMetric;
             if (existingRecord == false)
@@ -176,6 +177,7 @@ namespace PlanPerformance.Web.Controllers
             planMetric.PlanId = Guid.Parse(planId);
             planMetric.Value = Decimal.Parse(value);
             planMetric.ValueAsOf = DateTime.Parse(valueAsOf);
+            planMetric.IsBaseline = bool.Parse(isBaseline);
             planMetric.SaveRecordToDatabase(new Guid("17F6FCEB-CF02-E411-9726-D8D385C29900"));
 
             return View();

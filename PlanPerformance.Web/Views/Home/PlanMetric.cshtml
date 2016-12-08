@@ -50,6 +50,9 @@
         <br />
         <label class="input-label">Value As Of</label>
         @Html.TextBox("plan-metric-value-as-of", planMetric.ValueAsOf.ToString("MM/dd/yyyy"), new { @class = "input-text" });
+        <br />
+        <label class="input-label">Is Baseline Metric</label>
+        @Html.CheckBox("plan-metric-is-baseline", planMetric.IsBaseline, new { @class = "input-checkbox" });
 
         <div style="padding-top:15px;" />
 
