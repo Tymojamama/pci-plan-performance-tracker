@@ -12,7 +12,11 @@ namespace PlanPerformance.Web.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            ViewBag.Title = "Home";
+            var plans = DataIntegrationHub.Business.Entities.Plan.Get()
+                .FindAll(x => x.IsManagedPlan)
+                .OrderBy(x => x.Name).ToList();
+            return View(plans);
         }
 
         public ActionResult Plans()

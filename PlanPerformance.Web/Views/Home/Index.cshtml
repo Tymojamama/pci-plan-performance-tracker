@@ -1,7 +1,78 @@
-﻿@section SPAViews {
-    @Html.Partial("_Home")
+﻿@model List<DataIntegrationHub.Business.Entities.Plan>
+@{
+    var plans = Model;
+    var investment = 20.0m / plans.Count * 100;
+    var vendor = 25.0m / plans.Count * 100;
+    var participant = 24.0m / plans.Count * 100;
 }
-@section Scripts{
-    @Scripts.Render("~/bundles/knockout")
-    @Scripts.Render("~/bundles/app")
-}
+
+<div class="container">
+
+    <div class="row" style="margin-top:15px;">
+        <h1>Plan Performance Dashboard</h1>
+    </div>
+
+    <div class="row" style="margin-bottom:15px;">
+        <h2>% Top Performing Plans by Area</h2>
+        <div class="row" style="background-color:#0e2e47;color:white;margin:0;">
+            <div class="col-md-4 col-sm-12" style="text-align:center;">
+                <h2>@investment.ToString("F0")%</h2>
+                <p>INVESTMENT</p>
+            </div>
+
+            <div class="col-md-4 col-sm-12" style="text-align:center;">
+                <h2>@vendor.ToString("F0")%</h2>
+                <p>VENDOR</p>
+            </div>
+
+            <div class="col-md-4 col-sm-12" style="text-align:center;">
+                <h2>@participant.ToString("F0")%</h2>
+                <p>PARTICIPANT</p>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row" sstyle="margin-bottom:15px;">
+        <h2>Yellow Plans</h2>
+        <table class="data-table" style="background-color:yellow;">
+            <tr class="data-table-header">
+                <td class="data-table-header-cell">Name</td>
+                <td class="data-table-header-cell">VS</td>
+                <td class="data-table-header-cell">IS</td>
+                <td class="data-table-header-cell">RA</td>
+            </tr>
+            @foreach (var plan in plans.FindAll(x => x.Name.Contains("v")))
+            {
+                <tr class="data-table-row" onclick="goal_OnClick('@plan.PlanId.ToString()')">
+                    <td>@plan.Name</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+            }
+        </table>
+    </div>
+
+    <div class="row">
+        <h2>Red Plans</h2>
+        <table class="data-table" style="background-color:#da383c;color:white;">
+            <tr class="data-table-header" style="color:black;">
+                <td class="data-table-header-cell">Name</td>
+                <td class="data-table-header-cell">VS</td>
+                <td class="data-table-header-cell">IS</td>
+                <td class="data-table-header-cell">RA</td>
+            </tr>
+            @foreach (var plan in plans.FindAll(x => x.Name.Contains("v")))
+            {
+                <tr class="data-table-row" onclick="goal_OnClick('@plan.PlanId.ToString()')">
+                    <td>@plan.Name</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
+            }
+        </table>
+    </div>
+
+</div>
