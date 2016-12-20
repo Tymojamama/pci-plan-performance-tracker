@@ -4,6 +4,9 @@
     var investment = 20.0m / plans.Count * 100;
     var vendor = 25.0m / plans.Count * 100;
     var participant = 24.0m / plans.Count * 100;
+    
+    var yellowPlans = plans.FindAll(x => x.Name.Contains("y"));
+    var redPlans = plans.FindAll(x => x.Name.Contains("red"));
 }
 
 <script type="text/javascript">
@@ -12,45 +15,89 @@
     }
 </script>
 
-<div class="container">
+<style type="text/css">
+    #investment-card {
+        background-color:#0e2e47;
+        color:white;
+        text-align:center;
+        cursor:pointer;
+    }
 
-    <div class="row" style="margin-bottom:15px;margin-top:15px;">
+    #investment-card:hover {
+        background-color:#1a4668;
+    }
+
+    #vendor-card {
+        background-color:rgb(122, 1, 151);
+        color:white;
+        text-align:center;
+        cursor:pointer;
+    }
+
+    #vendor-card:hover {
+        background-color:rgb(147, 33, 174);
+    }
+    
+    #participant-card {
+        background-color:#d58512;
+        color:white;
+        text-align:center;
+        cursor:pointer;
+    }
+
+    #participant-card:hover {
+        background-color:#ec971f;
+    }
+</style>
+
+<div class="container">
+    <div class="row" style="margin-bottom:15px;margin-top:15px;border-bottom:3px solid #222222;font-size:30px;">
+        <span>Scope:</span>
+        <span>
+            <select value="Firm" style="border:1px solid #222222;border-radius:3px;vertical-align:middle; font-size:20px;margin-bottom:3px;">
+                <option>Firm</option>
+                <option>Consultant</option>
+            </select>
+        </span>
+    </div>
+    
+    <div class="row" style="margin-bottom:15px;">
         <div class="row" style="margin:0;">
             <div class="col-md-4 col-sm-12">
-                <div class="container" style="background-color:#0e2e47;color:white;text-align:center;">
+                <div class="container" id="investment-card">
                     <div class="col-xs-6" style="">
                         <h1>🏦</h1>
                         <h5>INVESTMENT</h5>
                     </div>
                     <div class="col-xs-6" style="">
                         <h1>@investment.ToString("F0")%</h1>
-                        <h5>in top quartile</h5>
+                        <h5>outperform index (net of fees)</h5>
                     </div>
                 </div>
             </div>
 
             <div class="col-md-4 col-sm-12">
-                <div class="container" style="background-color:rgb(194, 36, 38);color:white;text-align:center;">
+                <div class="container" id="vendor-card">
                     <div class="col-xs-6" style="">
                         <h1>🏬</h1>
                         <h5>VENDOR</h5>
                     </div>
                     <div class="col-xs-6" style="">
                         <h1>@vendor.ToString("F0")%</h1>
-                        <h5>in bottom quartile</h5>
+                        <h5>in bottom quartile of RK fees</h5>
                     </div>
                 </div>
             </div>
-            
+
             <div class="col-md-4 col-sm-12">
-                <div class="container" style="background-color:rgb(0, 153, 51);color:white;text-align:center;">
+                <div class="container" id="participant-card">
                     <div class="col-xs-6" style="">
                         <h1>👨</h1>
                         <h5>PARTICIPANT</h5>
                     </div>
                     <div class="col-xs-6" style="">
                         <h1>@participant.ToString("F0")%</h1>
-                        <h5>in top 35%</h5>
+                        <h5>in top 35% retirement ready</h5>
                     </div>
                 </div>
             </div>
@@ -58,40 +105,54 @@
         </div>
     </div>
 
-    <div class="row" sstyle="margin-bottom:15px;">
+    <div class="row" style="margin-bottom:15px;">
         <div class="col-md-6 col-sm-12">
-            <h2>
-                <span>🚩</span>
-                Yellow Plans
-            </h2>
-            <table class="data-table" style="background-color:#f1f442;">
-                <tr class="data-table-header">
-                    <td class="data-table-header-cell">Name</td>
-                </tr>
-                @foreach (var plan in plans.FindAll(x => x.Name.Contains("v")))
-                {
-                    <tr class="data-table-row" onclick="goal_OnClick('@plan.PlanId.ToString()')">
-                        <td>@plan.Name</td>
-                    </tr>
-                }
-            </table>
+            <div class="container" style="border: 3px solid #f1f442;border-radius:10px;background-color:#f1f442;padding-bottom:15px;">
+                <h2>
+                    <span>🚩</span>
+                    Yellow Plans
+                    <span>(@yellowPlans.Count.ToString())</span>
+                </h2>
+                    <table class="data-table" style="background-color:white;">
+                        <thead>
+                            <tr class="data-table-header">
+                                <td class="data-table-header-cell">Name</td>
+                            </tr>
+                        </thead>
+                        <tbody style="height:200px; overflow-x:hidden; overflow-y:scroll;display:inline-block;">
+                            @foreach (var plan in yellowPlans)
+                            {
+                                <tr class="data-table-row" onclick="goal_OnClick('@plan.PlanId.ToString()')">
+                                    <td>@plan.Name</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+            </div>
         </div>
         <div class="col-md-6 col-sm-12">
-            <h2>
-                <span>⚠️</span>
-                Red Plans
-            </h2>
-            <table class="data-table" style="background-color:#da383c;color:white;">
-                <tr class="data-table-header" style="color:black;">
-                    <td class="data-table-header-cell">Name</td>
-                </tr>
-                @foreach (var plan in plans.FindAll(x => x.Name.Contains("v")))
-                {
-                    <tr class="data-table-row" onclick="goal_OnClick('@plan.PlanId.ToString()')">
-                        <td>@plan.Name</td>
-                    </tr>
-                }
-            </table>
+            <div class="container" style="border: 3px solid #da383c;border-radius:10px;background-color:#da383c;padding-bottom:15px;">
+                <h2>
+                    <span>⚠️</span>
+                    Red Plans
+                    <span>(@redPlans.Count.ToString())</span>
+                </h2>
+                <table class="data-table" style="background-color:white;">
+                    <thead>
+                        <tr class="data-table-header" style="color:black;">
+                            <td class="data-table-header-cell">Name</td>
+                        </tr>
+                    </thead>
+                    <tbody style="height:200px; overflow-x:hidden; overflow-y:scroll;display:inline-block;">
+                        @foreach (var plan in redPlans)
+                        {
+                            <tr class="data-table-row" onclick="goal_OnClick('@plan.PlanId.ToString()')">
+                                <td>@plan.Name</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 

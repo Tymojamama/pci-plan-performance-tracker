@@ -25,3 +25,7 @@
 .data-table-row:hover {
     background-color: #eeeded;
 }
+
+.data-table-row > td {
+    cursor:pointer;
+}
