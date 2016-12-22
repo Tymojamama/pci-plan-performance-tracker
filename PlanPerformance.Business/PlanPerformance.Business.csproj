@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DataIntegrationHub.Business">
+      <HintPath>\\PC03\Common Ground\IT\Libraries\DataIntegrationHub.Business.dll</HintPath>
+    </Reference>
     <Reference Include="PensionConsultants.Data">
       <HintPath>\\PC03\Common Ground\IT\Libraries\PensionConsultants.Data.dll</HintPath>
     </Reference>
@@ -49,10 +52,9 @@
     <Compile Include="Entities\Goal.cs" />
     <Compile Include="Entities\IDatabaseEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utilities\PerformanceCalculator.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Utilities\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

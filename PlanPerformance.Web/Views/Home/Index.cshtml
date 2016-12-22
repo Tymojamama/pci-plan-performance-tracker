@@ -1,12 +1,25 @@
 ﻿@model List<DataIntegrationHub.Business.Entities.Plan>
+@using PlanPerformance.Business.Utilities
 @{
     var plans = Model;
-    var investment = 20.0m / plans.Count * 100;
-    var vendor = 25.0m / plans.Count * 100;
-    var participant = 24.0m / plans.Count * 100;
-    
-    var yellowPlans = plans.FindAll(x => x.Name.Contains("y"));
-    var redPlans = plans.FindAll(x => x.Name.Contains("red"));
+
+    var performanceInvestment = new PerformanceCalculator("Investment Services");
+    var plansGreenInvestment = plans.FindAll(x => performanceInvestment.IsGreenPlan(x));
+    var investment = (decimal)(plansGreenInvestment.Count) / plans.Count * 100m;
+
+    var performanceVendor = new PerformanceCalculator("Vendor Services");
+    var plansGreenVendor = plans.FindAll(x => performanceVendor.IsGreenPlan(x));
+    var vendor = (decimal)(plansGreenVendor.Count) / plans.Count * 100m;
+
+    var performanceParticipant = new PerformanceCalculator("RetireAdvisers");
+    var plansGreenParticipant = plans.FindAll(x => performanceParticipant.IsGreenPlan(x));
+    var participant = (decimal)(plansGreenParticipant.Count) / plans.Count * 100m;
+
+    var performance = new PerformanceCalculator();
+
+    var greenPlans = plans.FindAll(x => performance.IsGreenPlan(x));
+    var yellowPlans = plans.FindAll(x => performance.IsYellowPlan(x));
+    var redPlans = plans.FindAll(x => performance.IsRedPlan(x));
 }
 
 <script type="text/javascript">
@@ -16,37 +29,15 @@
 </script>
 
 <style type="text/css">
-    #investment-card {
+    .card {
         background-color:#0e2e47;
         color:white;
         text-align:center;
         cursor:pointer;
     }
 
-    #investment-card:hover {
+    .card:hover {
         background-color:#1a4668;
-    }
-
-    #vendor-card {
-        background-color:rgb(122, 1, 151);
-        color:white;
-        text-align:center;
-        cursor:pointer;
-    }
-
-    #vendor-card:hover {
-        background-color:rgb(147, 33, 174);
-    }
-    
-    #participant-card {
-        background-color:#d58512;
-        color:white;
-        text-align:center;
-        cursor:pointer;
-    }
-
-    #participant-card:hover {
-        background-color:#ec971f;
     }
 </style>
 
@@ -64,7 +55,7 @@
     <div class="row" style="margin-bottom:15px;">
         <div class="row" style="margin:0;">
             <div class="col-md-4 col-sm-12">
-                <div class="container" id="investment-card">
+                <div class="container card">
                     <div class="col-xs-6" style="">
                         <h1>🏦</h1>
                         <h5>INVESTMENT</h5>
@@ -76,8 +67,11 @@
                 </div>
             </div>
 
+            <div class="hidden-lg hidden-md col-sm-12" style="height: 15px;">
+            </div>
+
             <div class="col-md-4 col-sm-12">
-                <div class="container" id="vendor-card">
+                <div class="container card">
                     <div class="col-xs-6" style="">
                         <h1>🏬</h1>
                         <h5>VENDOR</h5>
@@ -89,8 +83,11 @@
                 </div>
             </div>
 
+            <div class="hidden-lg hidden-md col-sm-12" style="height: 15px;">
+            </div>
+
             <div class="col-md-4 col-sm-12">
-                <div class="container" id="participant-card">
+                <div class="container card">
                     <div class="col-xs-6" style="">
                         <h1>👨</h1>
                         <h5>PARTICIPANT</h5>
@@ -113,26 +110,30 @@
                     Yellow Plans
                     <span>(@yellowPlans.Count.ToString())</span>
                 </h2>
-                    <table class="data-table" style="background-color:white;">
-                        <thead>
-                            <tr class="data-table-header">
-                                <td class="data-table-header-cell">Name</td>
+                <table class="data-table" style="background-color:white;">
+                    <thead>
+                        <tr class="data-table-header">
+                            <td class="data-table-header-cell">Name</td>
+                        </tr>
+                    </thead>
+                    <tbody style="height:200px; overflow-x:hidden; overflow-y:scroll;display:inline-block;">
+                        @foreach (var plan in yellowPlans)
+                        {
+                            <tr class="data-table-row" onclick="goal_OnClick('@plan.PlanId.ToString()')">
+                                <td>@plan.Name</td>
                             </tr>
-                        </thead>
-                        <tbody style="height:200px; overflow-x:hidden; overflow-y:scroll;display:inline-block;">
-                            @foreach (var plan in yellowPlans)
-                            {
-                                <tr class="data-table-row" onclick="goal_OnClick('@plan.PlanId.ToString()')">
-                                    <td>@plan.Name</td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
+                        }
+                    </tbody>
+                </table>
             </div>
         </div>
+
+        <div class="hidden-lg hidden-md col-sm-12" style="height: 15px;">
+        </div>
+
         <div class="col-md-6 col-sm-12">
             <div class="container" style="border: 3px solid #da383c;border-radius:10px;background-color:#da383c;padding-bottom:15px;">
-                <h2>
+                <h2 style="color:white;">
                     <span>⚠️</span>
                     Red Plans
                     <span>(@redPlans.Count.ToString())</span>
@@ -154,6 +155,35 @@
                 </table>
             </div>
         </div>
+    </div>
+
+    <div class="row" style="margin-bottom:15px;">
+
+        <div class="col-lg-12">
+            <div class="container" style="border: 3px solid rgb(0, 153, 51);border-radius:10px;background-color:rgb(0, 153, 51);padding-bottom:15px;">
+                <h2 style="color:white;">
+                    <span>👍</span>
+                    Green Plans
+                    <span>(@greenPlans.Count.ToString())</span>
+                </h2>
+                <table class="data-table" style="background-color:white;">
+                    <thead>
+                        <tr class="data-table-header" style="color:black;">
+                            <td class="data-table-header-cell">Name</td>
+                        </tr>
+                    </thead>
+                    <tbody style="height:200px; overflow-x:hidden; overflow-y:scroll;display:inline-block;">
+                        @foreach (var plan in greenPlans)
+                        {
+                            <tr class="data-table-row" onclick="goal_OnClick('@plan.PlanId.ToString()')">
+                                <td>@plan.Name</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
     </div>
 
 </div>

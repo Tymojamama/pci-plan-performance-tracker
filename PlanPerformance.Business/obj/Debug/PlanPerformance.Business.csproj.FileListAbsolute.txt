@@ -5,3 +5,5 @@ C:\Users\zallen\Documents\Visual Studio 2013\Projects\Plan Performance Solution\
 C:\Users\zallen\Documents\Visual Studio 2013\Projects\Plan Performance Solution\PlanPerformance.Business\obj\Debug\PlanPerformance.Business.dll
 C:\Users\zallen\Documents\Visual Studio 2013\Projects\Plan Performance Solution\PlanPerformance.Business\obj\Debug\PlanPerformance.Business.pdb
 C:\Users\zallen\Documents\Visual Studio 2013\Projects\Plan Performance Solution\PlanPerformance.Business\obj\Debug\PlanPerformance.Business.csprojResolveAssemblyReference.cache
+C:\Users\zallen\Documents\Visual Studio 2013\Projects\Plan Performance Solution\PlanPerformance.Business\bin\Debug\DataIntegrationHub.Business.dll
+C:\Users\zallen\Documents\Visual Studio 2013\Projects\Plan Performance Solution\PlanPerformance.Business\bin\Debug\DataIntegrationHub.Business.pdb
