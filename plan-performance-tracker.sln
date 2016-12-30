@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.40629.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "plan-performance-tracker.Business", "plan-performance-tracker.Business\plan-performance-tracker.Business.csproj", "{F79FDD5F-5A43-43CB-8110-2A8472C89291}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "plan-performance-tracker.Web", "plan-performance-tracker.Web\plan-performance-tracker.Web.csproj", "{004C11AA-6248-48AE-A21D-365FCDDC65E8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F79FDD5F-5A43-43CB-8110-2A8472C89291}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F79FDD5F-5A43-43CB-8110-2A8472C89291}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F79FDD5F-5A43-43CB-8110-2A8472C89291}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F79FDD5F-5A43-43CB-8110-2A8472C89291}.Release|Any CPU.Build.0 = Release|Any CPU
+		{004C11AA-6248-48AE-A21D-365FCDDC65E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{004C11AA-6248-48AE-A21D-365FCDDC65E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{004C11AA-6248-48AE-A21D-365FCDDC65E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{004C11AA-6248-48AE-A21D-365FCDDC65E8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

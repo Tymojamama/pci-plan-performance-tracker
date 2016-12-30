@@ -1,0 +1,8 @@
+C:\Users\zallen\Documents\GitHub\pci-plan-performance-tracker\plan-performance-tracker.Business\bin\Debug\PlanPerformance.Business.dll
+C:\Users\zallen\Documents\GitHub\pci-plan-performance-tracker\plan-performance-tracker.Business\bin\Debug\PlanPerformance.Business.pdb
+C:\Users\zallen\Documents\GitHub\pci-plan-performance-tracker\plan-performance-tracker.Business\bin\Debug\DataIntegrationHub.Business.dll
+C:\Users\zallen\Documents\GitHub\pci-plan-performance-tracker\plan-performance-tracker.Business\bin\Debug\PensionConsultants.Data.dll
+C:\Users\zallen\Documents\GitHub\pci-plan-performance-tracker\plan-performance-tracker.Business\bin\Debug\DataIntegrationHub.Business.pdb
+C:\Users\zallen\Documents\GitHub\pci-plan-performance-tracker\plan-performance-tracker.Business\bin\Debug\PensionConsultants.Data.pdb
+C:\Users\zallen\Documents\GitHub\pci-plan-performance-tracker\plan-performance-tracker.Business\obj\Debug\PlanPerformance.Business.dll
+C:\Users\zallen\Documents\GitHub\pci-plan-performance-tracker\plan-performance-tracker.Business\obj\Debug\PlanPerformance.Business.pdb
