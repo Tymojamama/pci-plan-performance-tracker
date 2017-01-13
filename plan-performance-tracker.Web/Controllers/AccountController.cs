@@ -9,6 +9,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using PlanPerformance.Web.Models;
+using PlanPerformance.Business.Entities;
+using DataIntegrationHub.Business.Entities;
 
 namespace PlanPerformance.Web.Controllers
 {
@@ -144,6 +146,18 @@ namespace PlanPerformance.Web.Controllers
                     ModelState.AddModelError("", "Invalid code.");
                     return View(model);
             }
+        }
+
+        //
+        // GET: /Account/Dashboard
+        [AllowAnonymous]
+        public ActionResult Dashboard()
+        {
+            ViewBag.Title = "Dashboard";
+            var plans = DataIntegrationHub.Business.Entities.Plan.Get()
+                .FindAll(x => x.IsManagedPlan)
+                .OrderBy(x => x.Name).ToList();
+            return View(plans);
         }
 
         //
