@@ -43,5 +43,20 @@ namespace PlanPerformance.Business.Entities
         {
             this.ActionPlan = (String)base.GetColumn("ActionPlan");
         }
+
+        public static List<Plan> Get()
+        {
+            var result = new List<Plan>();
+            var dataTable = Access.DbAccess.ExecuteSqlQuery("SELECT " + _tableName + "Id FROM " + _tableName);
+
+            foreach (DataRow row in dataTable.Rows)
+            {
+                var id = Guid.Parse(row[_tableName + "Id"].ToString());
+                var plan = new Plan(id);
+                result.Add(plan);
+            }
+
+            return result;
+        }
     }
 }
