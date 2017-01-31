@@ -168,7 +168,17 @@ namespace PlanPerformance.Business.Entities
             }
 
             DataTable dataTable = this.GetDetails();
-            DataRow dataRow = dataTable.Rows[0];
+            DataRow dataRow;
+
+            if (dataTable.Rows.Count == 0)
+            {
+                Console.WriteLine(this.TableName + " with id " + this.Id.ToString() + " does not exist");
+                return;
+            }
+            else
+            {
+                dataRow = dataTable.Rows[0];
+            }
 
             DateTime? createdOn;
             DateTime? modifiedOn;
