@@ -103,35 +103,7 @@
     </div>
 
     <div class="row" style="margin-bottom:15px;">
-        <div class="col-md-6 col-sm-12">
-            <div class="container" style="border: 3px solid #f1f442;border-radius:10px;background-color:#f1f442;padding-bottom:15px;">
-                <h2>
-                    <span>🚩</span>
-                    Yellow Plans
-                    <span>(@yellowPlans.Count.ToString())</span>
-                </h2>
-                <table class="data-table" style="background-color:white;">
-                    <thead>
-                        <tr class="data-table-header">
-                            <td class="data-table-header-cell">Name</td>
-                        </tr>
-                    </thead>
-                    <tbody style="height:200px; overflow-x:hidden; overflow-y:scroll;display:inline-block;">
-                        @foreach (var plan in yellowPlans)
-                        {
-                            <tr class="data-table-row" onclick="goal_OnClick('@plan.PlanId.ToString()')">
-                                <td>@plan.Name</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div class="hidden-lg hidden-md col-sm-12" style="height: 15px;">
-        </div>
-
-        <div class="col-md-6 col-sm-12">
+        <div class="col-xs-12">
             <div class="container" style="border: 3px solid #da383c;border-radius:10px;background-color:#da383c;padding-bottom:15px;">
                 <h2 style="color:white;">
                     <span>⚠️</span>
