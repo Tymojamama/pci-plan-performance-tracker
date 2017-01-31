@@ -1,7 +1,8 @@
-﻿@model List<DataIntegrationHub.Business.Entities.Plan>
+﻿@model Tuple<List<DataIntegrationHub.Business.Entities.Plan>, List<PlanPerformance.Business.Entities.Plan>>
 @using PlanPerformance.Business.Utilities
 @{
-    var plans = Model;
+    var plans = Model.Item1;
+    var plansPPT = Model.Item2;
 
     var performanceInvestment = new PerformanceCalculator("Investment Services");
     var plansGreenInvestment = plans.FindAll(x => performanceInvestment.IsGreenPlan(x));
@@ -21,6 +22,8 @@
     var redPlans = plans.FindAll(x => performance.IsRedPlan(x));
 
     var topPerformingPercent = greenPlans.Count() * 1m / plans.Count() * 100m;
+
+    var plansWithActionItems = plansPPT.FindAll(x => !String.IsNullOrWhiteSpace(x.ActionPlan));
 }
 
 <script type="text/javascript">
@@ -137,6 +140,15 @@
                         {
                             <tr class="data-table-row" onclick="goal_OnClick('@plan.PlanId.ToString()')">
                                 <td>@plan.Name</td>
+
+                                @if (plansWithActionItems.Exists(x => x.Id == plan.PlanId))
+                                {
+                                    <td>📓</td>
+                                }
+                                else
+                                {
+                                    <td></td>
+                                }
                             </tr>
                         }
                     </tbody>

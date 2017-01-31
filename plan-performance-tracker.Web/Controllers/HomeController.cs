@@ -16,7 +16,11 @@ namespace PlanPerformance.Web.Controllers
             var plans = DataIntegrationHub.Business.Entities.Plan.Get()
                 .FindAll(x => x.IsManagedPlan)
                 .OrderBy(x => x.Name).ToList();
-            return View(plans);
+
+            var plansPPT = PlanPerformance.Business.Entities.Plan.Get();
+
+            var tuple = new Tuple<List<DataIntegrationHub.Business.Entities.Plan>, List<PlanPerformance.Business.Entities.Plan>>(plans, plansPPT);
+            return View(tuple);
         }
 
         public ActionResult Plans()

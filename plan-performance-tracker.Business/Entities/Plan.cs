@@ -47,7 +47,7 @@ namespace PlanPerformance.Business.Entities
         public static List<Plan> Get()
         {
             var result = new List<Plan>();
-            var dataTable = Access.DbAccess.ExecuteSqlQuery("SELECT " + _tableName + "Id FROM " + _tableName);
+            var dataTable = Access.DbAccess.ExecuteSqlQuery("SELECT [" + _tableName + "Id] FROM [" + _tableName + "]");
 
             foreach (DataRow row in dataTable.Rows)
             {
