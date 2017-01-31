@@ -3,21 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DataIntegrationHub.Business.Entities;
+using DIH = DataIntegrationHub.Business.Entities;
 using PlanPerformance.Business.Entities;
 
 namespace PlanPerformance.Business.Utilities
 {
     public class PerformanceCalculator
     {
-        public readonly List<Plan> Plans;
+        public readonly List<DIH.Plan> Plans;
         public readonly List<PlanMetric> PlanMetrics;
         public readonly List<Goal> Goals;
         public readonly List<GoalMetric> GoalMetrics;
 
         public PerformanceCalculator()
         {
-            this.Plans = Plan.Get();
+            this.Plans = DIH.Plan.Get();
             this.PlanMetrics = PlanMetric.Get();
             this.Goals = Goal.Get();
             this.GoalMetrics = GoalMetric.Get();
@@ -25,7 +25,7 @@ namespace PlanPerformance.Business.Utilities
 
         public PerformanceCalculator(string team)
         {
-            this.Plans = Plan.Get();
+            this.Plans = DIH.Plan.Get();
             this.PlanMetrics = PlanMetric.Get();
             this.Goals = Goal.Get().FindAll(x => x.Team == team);
             this.GoalMetrics = GoalMetric.Get();
@@ -37,7 +37,7 @@ namespace PlanPerformance.Business.Utilities
         /// </summary>
         /// <param name="plan"></param>
         /// <returns></returns>
-        public bool IsGreenPlan(Plan plan)
+        public bool IsGreenPlan(DIH.Plan plan)
         {
             var result = true;
             foreach (var goal in this.Goals)
@@ -51,12 +51,12 @@ namespace PlanPerformance.Business.Utilities
             return result;
         }
 
-        public bool IsYellowPlan(Plan plan)
+        public bool IsYellowPlan(DIH.Plan plan)
         {
             return !(this.IsGreenPlan(plan) || this.IsRedPlan(plan));
         }
 
-        public bool IsRedPlan(Plan plan)
+        public bool IsRedPlan(DIH.Plan plan)
         {
             var result = false;
             foreach (var goal in this.Goals)
@@ -70,7 +70,7 @@ namespace PlanPerformance.Business.Utilities
             return result;
         }
 
-        public bool Outperforms(Plan plan, Goal goal)
+        public bool Outperforms(DIH.Plan plan, Goal goal)
         {
             // If plan doesn't have any metrics, it passes
             var metrics = this.PlanMetrics.FindAll(x => x.PlanId == plan.PlanId);
@@ -122,7 +122,7 @@ namespace PlanPerformance.Business.Utilities
             }
         }
 
-        public bool OutperformsBarely(Plan plan, Goal goal)
+        public bool OutperformsBarely(DIH.Plan plan, Goal goal)
         {
             // If plan doesn't have any metrics, it passes
             var metrics = this.PlanMetrics.FindAll(x => x.PlanId == plan.PlanId);

@@ -48,6 +48,7 @@
     <Compile Include="Components\Access.cs" />
     <Compile Include="Entities\DatabaseEntity.cs" />
     <Compile Include="Entities\GoalMetric.cs" />
+    <Compile Include="Entities\Plan.cs" />
     <Compile Include="Entities\PlanMetric.cs" />
     <Compile Include="Entities\Goal.cs" />
     <Compile Include="Entities\IDatabaseEntity.cs" />
