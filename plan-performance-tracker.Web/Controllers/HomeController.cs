@@ -38,11 +38,25 @@ namespace PlanPerformance.Web.Controllers
             }
             else
             {
+                var planPPT = new PlanPerformance.Business.Entities.Plan(Guid.Parse(id));
                 var plan = new DataIntegrationHub.Business.Entities.Plan(Guid.Parse(id));
                 ViewBag.Title = plan.Name;
-                return View(plan);
-            }
 
+                var tuple = new Tuple<DataIntegrationHub.Business.Entities.Plan, PlanPerformance.Business.Entities.Plan>(plan, planPPT);
+                return View(tuple);
+            }
+        }
+
+        public ActionResult SavePlan(FormCollection collection)
+        {
+            var existingRecord = Boolean.Parse(collection["plan-existing-record"].ToString());
+            var id = Guid.Parse(collection["plan-id"].ToString());
+            var actionPlan = collection["plan-action-plan"].ToString();
+            var plan = new PlanPerformance.Business.Entities.Plan(id);
+            plan.ActionPlan = actionPlan;
+            plan.SaveRecordToDatabase(new Guid("17F6FCEB-CF02-E411-9726-D8D385C29900"));
+
+            return View();
         }
 
         public ActionResult GoalMetrics()

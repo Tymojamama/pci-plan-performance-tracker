@@ -173,6 +173,7 @@ namespace PlanPerformance.Business.Entities
             if (dataTable.Rows.Count == 0)
             {
                 Console.WriteLine(this.TableName + " with id " + this.Id.ToString() + " does not exist");
+                this.ExistingRecord = false;
                 return;
             }
             else

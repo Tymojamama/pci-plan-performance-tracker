@@ -13,7 +13,7 @@ namespace PlanPerformance.Business.Entities
     {
         public string ActionPlan;
 
-        private static string _tableName = "PlanMetric";
+        private static string _tableName = "Plan";
 
         public Plan()
             : base(_tableName)

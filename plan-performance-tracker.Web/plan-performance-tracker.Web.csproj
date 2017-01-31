@@ -327,6 +327,7 @@
     <Content Include="Views\Home\SaveGoalMetric.cshtml" />
     <Content Include="Views\Home\DeleteGoalMetric.cshtml" />
     <Content Include="Views\Account\Dashboard.cshtml" />
+    <Content Include="Views\Home\SavePlan.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

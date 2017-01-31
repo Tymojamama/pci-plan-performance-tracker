@@ -1,6 +1,7 @@
-﻿@model DataIntegrationHub.Business.Entities.Plan
+﻿@model Tuple<DataIntegrationHub.Business.Entities.Plan, PlanPerformance.Business.Entities.Plan>
 @{
-    var plan = Model;
+    var plan = Model.Item1;
+    var planPPT = Model.Item2;
     var planMetrics = PlanPerformance.Business.Entities.PlanMetric.Get().FindAll(x => x.PlanId == plan.PlanId);
     var goals = PlanPerformance.Business.Entities.Goal.Get();
     var plans = DataIntegrationHub.Business.Entities.Plan.Get();
@@ -38,6 +39,18 @@
         <input class="input-text" type="text" value="@plan.Description" disabled />
 
         <div style="padding-top:15px;" />
+    }
+
+    @using (Html.BeginForm("SavePlan", "Home", FormMethod.Post, new { @style = "display:inline;" }))
+    {
+        @Html.Hidden("plan-existing-record", planPPT.ExistingRecord);
+        @Html.Hidden("plan-id", planPPT.Id);
+        <label class="input-label">Action Plan</label>
+        @Html.TextArea("plan-action-plan", planPPT.ActionPlan, new { @class = "input-text" });
+
+        <div style="padding-top:15px;" />
+
+        <input class="input-button" type="submit" value="Save" />
     }
 
     @using (Html.BeginForm("Plans", "Home", FormMethod.Get, new { @style = "display:inline;" }))
