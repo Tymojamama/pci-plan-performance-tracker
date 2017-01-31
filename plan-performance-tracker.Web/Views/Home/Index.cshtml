@@ -18,8 +18,9 @@
     var performance = new PerformanceCalculator();
 
     var greenPlans = plans.FindAll(x => performance.IsGreenPlan(x));
-    var yellowPlans = plans.FindAll(x => performance.IsYellowPlan(x));
     var redPlans = plans.FindAll(x => performance.IsRedPlan(x));
+
+    var topPerformingPercent = greenPlans.Count() * 1m / plans.Count() * 100m;
 }
 
 <script type="text/javascript">
@@ -54,51 +55,66 @@
     
     <div class="row" style="margin-bottom:15px;">
         <div class="row" style="margin:0;">
-            <div class="col-md-4 col-sm-12">
+            <div class="col-xs-12">
                 <div class="container card">
-                    <div class="col-xs-6" style="">
-                        <h1>🏦</h1>
-                        <h5>INVESTMENT</h5>
-                    </div>
-                    <div class="col-xs-6" style="">
-                        <h1>@investment.ToString("F0")%</h1>
-                        <h5>outperform index (net of fees)</h5>
-                    </div>
+                    <h1>
+                        Top Performing: 
+                        @topPerformingPercent.ToString("F0")%
+                    </h1>
                 </div>
             </div>
+        </div>
+    </div>
 
-            <div class="hidden-lg hidden-md col-sm-12" style="height: 15px;">
-            </div>
-
-            <div class="col-md-4 col-sm-12">
-                <div class="container card">
-                    <div class="col-xs-6" style="">
-                        <h1>🏬</h1>
-                        <h5>VENDOR</h5>
-                    </div>
-                    <div class="col-xs-6" style="">
-                        <h1>@vendor.ToString("F0")%</h1>
-                        <h5>in bottom quartile of RK fees</h5>
-                    </div>
-                </div>
-            </div>
-
-            <div class="hidden-lg hidden-md col-sm-12" style="height: 15px;">
-            </div>
-
-            <div class="col-md-4 col-sm-12">
-                <div class="container card">
-                    <div class="col-xs-6" style="">
-                        <h1>👨</h1>
-                        <h5>PARTICIPANT</h5>
-                    </div>
-                    <div class="col-xs-6" style="">
-                        <h1>@participant.ToString("F0")%</h1>
-                        <h5>in top 35% retirement ready</h5>
+    <div class="row" style="margin-bottom:15px;">
+        <div class="row" style="margin:0;">
+            <div class="row" style="margin:0;">
+                <div class="col-md-4 col-sm-12">
+                    <div class="container card">
+                        <div class="col-xs-6" style="">
+                            <h1>🏦</h1>
+                            <h5>INVESTMENT</h5>
+                        </div>
+                        <div class="col-xs-6" style="">
+                            <h1>@investment.ToString("F0")%</h1>
+                            <h5>outperform index (net of fees)</h5>
+                        </div>
                     </div>
                 </div>
-            </div>
 
+                <div class="hidden-lg hidden-md col-sm-12" style="height: 15px;">
+                </div>
+
+                <div class="col-md-4 col-sm-12">
+                    <div class="container card">
+                        <div class="col-xs-6" style="">
+                            <h1>🏬</h1>
+                            <h5>VENDOR</h5>
+                        </div>
+                        <div class="col-xs-6" style="">
+                            <h1>@vendor.ToString("F0")%</h1>
+                            <h5>in bottom quartile of RK fees</h5>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hidden-lg hidden-md col-sm-12" style="height: 15px;">
+                </div>
+
+                <div class="col-md-4 col-sm-12">
+                    <div class="container card">
+                        <div class="col-xs-6" style="">
+                            <h1>👨</h1>
+                            <h5>PARTICIPANT</h5>
+                        </div>
+                        <div class="col-xs-6" style="">
+                            <h1>@participant.ToString("F0")%</h1>
+                            <h5>in top 35% retirement ready</h5>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
     </div>
 
