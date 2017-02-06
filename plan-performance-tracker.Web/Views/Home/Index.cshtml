@@ -6,22 +6,37 @@
 
     var performanceInvestment = new PerformanceCalculator("Investment Services");
     var plansGreenInvestment = plans.FindAll(x => performanceInvestment.IsGreenPlan(x));
-    var investment = (decimal)(plansGreenInvestment.Count) / plans.Count * 100m;
+    var investment = 0m;
+    if (plans.Count > 0)
+    {
+        investment = (decimal)(plansGreenInvestment.Count) / plans.Count * 100m;
+    }
 
     var performanceVendor = new PerformanceCalculator("Vendor Services");
     var plansGreenVendor = plans.FindAll(x => performanceVendor.IsGreenPlan(x));
-    var vendor = (decimal)(plansGreenVendor.Count) / plans.Count * 100m;
-
+    var vendor = 0m; 
+    if (plans.Count > 0)
+    {
+        vendor = (decimal)(plansGreenVendor.Count) / plans.Count * 100m;
+    }
+    
     var performanceParticipant = new PerformanceCalculator("RetireAdvisers");
     var plansGreenParticipant = plans.FindAll(x => performanceParticipant.IsGreenPlan(x));
-    var participant = (decimal)(plansGreenParticipant.Count) / plans.Count * 100m;
+    var participant = 0m;
+    if (plans.Count > 0)
+    {
+        participant = (decimal)(plansGreenParticipant.Count) / plans.Count * 100m;
+    }
 
-    var performance = new PerformanceCalculator();
+    var performanceAll = new PerformanceCalculator("All");
+    var greenPlans = plans.FindAll(x => performanceAll.IsGreenPlan(x));
+    var redPlans = plans.FindAll(x => performanceAll.IsRedPlan(x));
 
-    var greenPlans = plans.FindAll(x => performance.IsGreenPlan(x));
-    var redPlans = plans.FindAll(x => performance.IsRedPlan(x));
-
-    var topPerformingPercent = greenPlans.Count() * 1m / (greenPlans.Count() + redPlans.Count()) * 100m;
+    var topPerformingPercent = 0m;
+    if (greenPlans.Count() + redPlans.Count() > 0)
+    {
+        topPerformingPercent = greenPlans.Count() * 1m / (greenPlans.Count() + redPlans.Count()) * 100m;
+    }
 
     var plansWithActionItems = plansPPT.FindAll(x => !String.IsNullOrWhiteSpace(x.ActionPlan));
 }
@@ -161,9 +176,9 @@
                     <thead>
                         <tr class="data-table-header" style="color:black;">
                             <td class="data-table-header-cell">Name</td>
-                            <td class="data-table-header-cell">RA</td>
                             <td class="data-table-header-cell">IS</td>
                             <td class="data-table-header-cell">VS</td>
+                            <td class="data-table-header-cell">RA</td>
                             <td class="data-table-header-cell"></td>
                         </tr>
                     </thead>
@@ -172,15 +187,6 @@
                         {
                             <tr class="data-table-row" onclick="goal_OnClick('@plan.PlanId.ToString()')">
                                 <td>@plan.Name</td>
-
-                                @if (plansGreenParticipant.Exists(x => x.PlanId == plan.PlanId))
-                                {
-                                    <td style="color:#009933;">✔️</td>
-                                }
-                                else
-                                {
-                                    <td style="color:#da383c;">✖️</td>
-                                }
 
                                 @if (plansGreenInvestment.Exists(x => x.PlanId == plan.PlanId))
                                 {
@@ -192,6 +198,15 @@
                                 }
 
                                 @if (plansGreenVendor.Exists(x => x.PlanId == plan.PlanId))
+                                {
+                                    <td style="color:#009933;">✔️</td>
+                                }
+                                else
+                                {
+                                    <td style="color:#da383c;">✖️</td>
+                                }
+
+                                @if (plansGreenParticipant.Exists(x => x.PlanId == plan.PlanId))
                                 {
                                     <td style="color:#009933;">✔️</td>
                                 }
@@ -229,9 +244,9 @@
                     <thead>
                         <tr class="data-table-header" style="color:black;">
                             <td class="data-table-header-cell">Name</td>
-                            <td class="data-table-header-cell">RA</td>
                             <td class="data-table-header-cell">IS</td>
                             <td class="data-table-header-cell">VS</td>
+                            <td class="data-table-header-cell">RA</td>
                             <td class="data-table-header-cell"></td>
                         </tr>
                     </thead>
@@ -239,18 +254,7 @@
                         @foreach (var plan in greenPlans)
                         {
                             <tr class="data-table-row" onclick="goal_OnClick('@plan.PlanId.ToString()')">
-                                <td>@plan.Name</td>
-
-                                @if (plansGreenParticipant.Exists(x => x.PlanId == plan.PlanId))
-                                {
-                                    <td style="color:#009933;">✔️</td>
-                                }
-                                else
-                                {
-                                    <td style="color:#da383c;">✖️</td>
-                                }
-
-                                @if (plansGreenInvestment.Exists(x => x.PlanId == plan.PlanId))
+                                <td>@plan.Name</td>                                @if (plansGreenInvestment.Exists(x => x.PlanId == plan.PlanId))
                                 {
                                     <td style="color:#009933;">✔️</td>
                                 }
@@ -260,6 +264,15 @@
                                 }
 
                                 @if (plansGreenVendor.Exists(x => x.PlanId == plan.PlanId))
+                                {
+                                    <td style="color:#009933;">✔️</td>
+                                }
+                                else
+                                {
+                                    <td style="color:#da383c;">✖️</td>
+                                }
+
+                                @if (plansGreenParticipant.Exists(x => x.PlanId == plan.PlanId))
                                 {
                                     <td style="color:#009933;">✔️</td>
                                 }

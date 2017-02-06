@@ -1,9 +1,12 @@
 ﻿@model PlanPerformance.Business.Entities.Goal
 @{
     var goal = Model;
-    var goalMetrics = PlanPerformance.Business.Entities.GoalMetric.Get().FindAll(x => x.GoalId == goal.Id);
     var goals = PlanPerformance.Business.Entities.Goal.Get();
     var plans = DataIntegrationHub.Business.Entities.Plan.Get();
+    var goalMetrics = PlanPerformance.Business.Entities.GoalMetric.Get()
+        .FindAll(x => x.GoalId == goal.Id)
+        .OrderByDescending(x => x.ValueAsOf);
+        //.ThenBy(x => plans.Find(p => p.PlanId == x.PlanId).Name);
 }
 
 <script type="text/javascript">
@@ -78,7 +81,7 @@
         <div style="float:left;">
             <button class="input-button" onclick="newGoalMetric_OnClick('@goal.Id')">New</button>
         </div>
-        <div style="float:right;">
+        <div style="float:right;display:none">
             <span>Search:</span>
             <input type="text" />
         </div>

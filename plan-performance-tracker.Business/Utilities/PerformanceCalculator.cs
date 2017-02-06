@@ -39,7 +39,6 @@ namespace PlanPerformance.Business.Utilities
         /// <returns></returns>
         public bool IsGreenPlan(DIH.Plan plan)
         {
-            var result = true;
             foreach (var goal in this.Goals)
             {
                 if (Outperforms(plan, goal) == false)
@@ -48,26 +47,20 @@ namespace PlanPerformance.Business.Utilities
                 }
             }
 
-            return result;
-        }
-
-        public bool IsYellowPlan(DIH.Plan plan)
-        {
-            return !(this.IsGreenPlan(plan) || this.IsRedPlan(plan));
+            return true;
         }
 
         public bool IsRedPlan(DIH.Plan plan)
         {
-            var result = false;
             foreach (var goal in this.Goals)
             {
-                if (OutperformsBarely(plan, goal) == false && Outperforms(plan, goal) == false)
+                if (Outperforms(plan, goal) == false)
                 {
                     return true;
                 }
             }
 
-            return result;
+            return false;
         }
 
         public bool Outperforms(DIH.Plan plan, Goal goal)
@@ -85,90 +78,28 @@ namespace PlanPerformance.Business.Utilities
             {
                 return true;
             }
-
-            // Find the latest goal metric for the goal and plan
-            var goalMetrics = this.GoalMetrics
-                .FindAll(x => x.PlanId == plan.PlanId)
-                .FindAll(x => x.ValueAsOf.Date <= metric.ValueAsOf.Date);
-            var goalMetric = goalMetrics.OrderByDescending(x => x.ValueAsOf).FirstOrDefault();
-
-            // If no goal metric for goal and plan, it passes
-            if (goalMetric == null)
-            {
-                return true;
-            }
             
-            return Outperforms(metric, goalMetric);
+            return Outperforms(metric, goal);
         }
 
-        public bool Outperforms(PlanMetric planMetric, GoalMetric goalMetric)
+        public bool Outperforms(PlanMetric planMetric, Goal goal)
         {
-            var goal = this.Goals.Find(x => x.Id == goalMetric.GoalId);
-            if (goal == null)
+            var goalMetric = planMetric.GetGoalMetric(goal, this.GoalMetrics);
+            if (goalMetric == null)
             {
                 return true;
             }
 
             switch (goal.Team)
             {
+                case "All":
+                    return (planMetric.Value > goalMetric.Value);
                 case "Investment Services":
                     return (planMetric.Value > goalMetric.Value);
                 case "RetireAdvisers":
                     return (planMetric.Value > goalMetric.Value);
                 case "Vendor Services":
                     return (planMetric.Value < goalMetric.Value);
-                default:
-                    return false;
-            }
-        }
-
-        public bool OutperformsBarely(DIH.Plan plan, Goal goal)
-        {
-            // If plan doesn't have any metrics, it passes
-            var metrics = this.PlanMetrics.FindAll(x => x.PlanId == plan.PlanId);
-            if (metrics.Count == 0)
-            {
-                return true;
-            }
-
-            // If plan doesn't have any metrics for the team, it passes
-            var metric = metrics.FindAll(x => x.GoalId == goal.Id).OrderByDescending(x => x.ValueAsOf).FirstOrDefault();
-            if (metric == null)
-            {
-                return true;
-            }
-
-            // Find the latest goal metric for the goal and plan
-            var goalMetrics = this.GoalMetrics
-                .FindAll(x => x.PlanId == plan.PlanId)
-                .FindAll(x => x.ValueAsOf.Date <= metric.ValueAsOf.Date);
-            var goalMetric = goalMetrics.OrderByDescending(x => x.ValueAsOf).FirstOrDefault();
-
-            // If no goal metric for goal and plan, it passes
-            return (goalMetric != null && OutperformsBarely(metric, goalMetric));
-        }
-
-        public bool OutperformsBarely(PlanMetric planMetric, GoalMetric goalMetric)
-        {
-            var goal = this.Goals.Find(x => x.Id == goalMetric.GoalId);
-            if (goal == null)
-            {
-                return true;
-            }
-
-            var metrics = this.PlanMetrics.FindAll(x => x.GoalId == goal.Id && x.ValueAsOf.Date <= planMetric.ValueAsOf.Date).Select(x => x.Value).ToArray();
-            var average = metrics.Average();
-            var sumOfSquaresOfDifferences = metrics.Select(val => (val - average) * (val - average)).Sum();
-            var stdev = (decimal)Math.Sqrt((double)(sumOfSquaresOfDifferences / metrics.Length));
-
-            switch (goal.Team)
-            {
-                case "Investment Services":
-                    return (planMetric.Value + stdev > goalMetric.Value);
-                case "RetireAdvisers":
-                    return (planMetric.Value + stdev > goalMetric.Value);
-                case "Vendor Services":
-                    return (planMetric.Value - stdev < goalMetric.Value);
                 default:
                     return false;
             }

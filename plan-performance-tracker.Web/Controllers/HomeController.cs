@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using PlanPerformance.Business.Entities;
 using DataIntegrationHub.Business.Entities;
 
@@ -13,14 +14,53 @@ namespace PlanPerformance.Web.Controllers
         public ActionResult Index()
         {
             ViewBag.Title = "Home";
-            var plans = DataIntegrationHub.Business.Entities.Plan.Get()
-                .FindAll(x => x.IsManagedPlan)
-                .OrderBy(x => x.Name).ToList();
 
-            var plansPPT = PlanPerformance.Business.Entities.Plan.Get();
+            string scope = Request.Params["s"];
+            if (scope == "Consultant")
+            {
+                var plans = DataIntegrationHub.Business.Entities.Plan.Get()
+                    .FindAll(x => x.IsManagedPlan)
+                    .OrderBy(x => x.Name).ToList();
 
-            var tuple = new Tuple<List<DataIntegrationHub.Business.Entities.Plan>, List<PlanPerformance.Business.Entities.Plan>>(plans, plansPPT);
-            return View(tuple);
+                var email = User.Identity.GetUserName();
+                var plansPPT = PlanPerformance.Business.Entities.Plan.GetConsultantPlans(email);
+
+                var result = new List<DataIntegrationHub.Business.Entities.Plan>();
+                foreach (var plan in plans) {
+                    result.Add(plan);
+                }
+
+                foreach (var plan in plans)
+                {
+                    var exists = false;
+                    foreach (var planPPT in plansPPT)
+                    {
+                        if (planPPT.Id == plan.PlanId)
+                        {
+                            exists = true;
+                        }
+                    }
+
+                    if (!exists)
+                    {
+                        result.Remove(plan);
+                    }
+                }
+
+                var tuple = new Tuple<List<DataIntegrationHub.Business.Entities.Plan>, List<PlanPerformance.Business.Entities.Plan>>(result, plansPPT);
+                return View(tuple);
+            }
+            else
+            {
+                var plans = DataIntegrationHub.Business.Entities.Plan.Get()
+                    .FindAll(x => x.IsManagedPlan)
+                    .OrderBy(x => x.Name).ToList();
+
+                var plansPPT = PlanPerformance.Business.Entities.Plan.Get();
+
+                var tuple = new Tuple<List<DataIntegrationHub.Business.Entities.Plan>, List<PlanPerformance.Business.Entities.Plan>>(plans, plansPPT);
+                return View(tuple);
+            }
         }
 
         public ActionResult Plans()

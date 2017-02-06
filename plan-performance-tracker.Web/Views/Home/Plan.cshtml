@@ -23,23 +23,19 @@
         <h1>@plan.Name</h1>
     </div>
 
-    @using (Html.BeginForm("SavePlanMetric", "Home", FormMethod.Post, new { @style = "display:inline;" }))
-    {
-        @Html.Hidden("plan-id", plan.PlanId);
-        <label class="input-label">Name</label>
-        <input class="input-text" type="text" value="@plan.Name" disabled />
-        <br />
-        <label class="input-label">Type</label>
-        <input class="input-text" type="text" value="@plan.Type" disabled />
-        <br />
-        <label class="input-label">Inception Date</label>
-        <input class="input-text" type="text" value="@plan.InceptionDate" disabled />
-        <br />
-        <label class="input-label">Description</label>
-        <input class="input-text" type="text" value="@plan.Description" disabled />
+    <label class="input-label">Name</label>
+    <input class="input-text" type="text" value="@plan.Name" disabled />
+    <br />
+    <label class="input-label">Type</label>
+    <input class="input-text" type="text" value="@plan.Type" disabled />
+    <br />
+    <label class="input-label">Inception Date</label>
+    <input class="input-text" type="text" value="@plan.InceptionDate" disabled />
+    <br />
+    <label class="input-label">Description</label>
+    <input class="input-text" type="text" value="@plan.Description" disabled />
 
-        <div style="padding-top:15px;" />
-    }
+    <div style="padding-top:15px;" />
 
     @using (Html.BeginForm("SavePlan", "Home", FormMethod.Post, new { @style = "display:inline;" }))
     {
@@ -69,7 +65,7 @@
         <div style="float:left;">
             <button class="input-button" onclick="newPlanMetric_OnClick('@plan.PlanId')">New</button>
         </div>
-        <div style="float:right;">
+        <div style="float:right;display:none">
             <span>Search:</span>
             <input type="text" />
         </div>
@@ -78,17 +74,25 @@
     <table class="data-table">
         <tr class="data-table-header">
             <td class="data-table-header-cell">Goal</td>
-            <td class="data-table-header-cell">Plan</td>
-            <td class="data-table-header-cell">Value</td>
+            <td class="data-table-header-cell">Goal Metric</td>
+            <td class="data-table-header-cell">Plan Metric</td>
             <td class="data-table-header-cell">Value As Of</td>
         </tr>
-        @foreach (var planMetric in planMetrics)
+        @foreach (var planMetric in planMetrics.OrderByDescending(x => x.ValueAsOf))
         {
             <tr class="data-table-row" onclick="planMetric_OnClick('@planMetric.Id.ToString()','@plan.PlanId.ToString()')">
                 <td>@goals.Find(x => x.Id == planMetric.GoalId).Name</td>
-                <td>@plans.Find(x => x.PlanId == planMetric.PlanId).Name</td>
-                <td>@planMetric.Value</td>
-                <td>@planMetric.ValueAsOf</td>
+                @{ var goalMetric = planMetric.GetGoalMetric(); }
+                @if (goalMetric != null)
+                {
+                    <td>@planMetric.GetGoalMetric().Value.ToString("F2")</td>
+                }
+                else
+                {
+                    <td>-</td>
+                }
+                <td>@planMetric.Value.ToString("F2")</td>
+                <td>@planMetric.ValueAsOf.ToString("MM/dd/yyyy")</td>
             </tr>
         }
     </table>

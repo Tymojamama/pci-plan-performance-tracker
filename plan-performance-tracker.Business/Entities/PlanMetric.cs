@@ -56,6 +56,49 @@ namespace PlanPerformance.Business.Entities
             this.IsBaseline = bool.Parse(base.GetColumn("IsBaseline").ToString());
         }
 
+        public GoalMetric GetGoalMetric()
+        {
+            var goal = new Goal(this.GoalId);
+            var goalMetrics = GoalMetric.Get().FindAll(x => x.GoalId == goal.Id && x.ValueAsOf <= this.ValueAsOf);
+            if (goal.Team == "RetireAdvisers")
+            {
+                //return goalMetrics.Find(x => x.Industry == this.GetPlan().Industry);
+                return goalMetrics.Find(x => x.PlanId == this.PlanId);
+            }
+            else if (goal.Team == "Vendor Services")
+            {
+                return goalMetrics.Find(x => x.PlanId == this.PlanId);
+            }
+            else
+            {
+                return goalMetrics.FirstOrDefault();
+            }
+        }
+
+        /// <summary>
+        /// A faster version of GetGoalMetric() if goal and goalmetrics have already been retrieved in memory
+        /// </summary>
+        /// <param name="goal"></param>
+        /// <param name="_goalMetrics"></param>
+        /// <returns></returns>
+        public GoalMetric GetGoalMetric(Goal goal, List<GoalMetric> _goalMetrics)
+        {
+            var goalMetrics = _goalMetrics.FindAll(x => x.GoalId == goal.Id && x.ValueAsOf <= this.ValueAsOf);
+            if (goal.Team == "RetireAdvisers")
+            {
+                //return goalMetrics.Find(x => x.Industry == this.GetPlan().Industry);
+                return goalMetrics.Find(x => x.PlanId == this.PlanId);
+            }
+            else if (goal.Team == "Vendor Services")
+            {
+                return goalMetrics.Find(x => x.PlanId == this.PlanId);
+            }
+            else
+            {
+                return goalMetrics.FirstOrDefault();
+            }
+        }
+
         public static List<PlanMetric> Get()
         {
             var result = new List<PlanMetric>();

@@ -58,5 +58,23 @@ namespace PlanPerformance.Business.Entities
 
             return result;
         }
+
+        public static List<Plan> GetConsultantPlans(string email)
+        {
+            var result = new List<Plan>();
+            var dac = new PensionConsultants.Data.Access.DataAccessComponent(PensionConsultants.Data.Access.DataAccessComponent.Connections.PCIDB_Pension_Consultants_MSCRM);
+            Hashtable parameterList = new Hashtable();
+            parameterList.Add("@Email", email);
+            var dataTable = dac.ExecuteStoredProcedureQuery("usp_GetConsultantPlans", parameterList);
+
+            foreach (DataRow row in dataTable.Rows)
+            {
+                var id = Guid.Parse(row["PlanId"].ToString());
+                var plan = new Plan(id);
+                result.Add(plan);
+            }
+
+            return result;
+        }
     }
 }
