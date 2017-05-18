@@ -17,7 +17,7 @@ namespace PlanPerformance.Business.Entities
         /// <summary>
         /// Deletes the record from the database.
         /// </summary>
-        void DeleteRecordFromDatabase();
+        void DeleteRecordFromDatabase(Guid modifiedBy);
 
         /// <summary>
         /// Resets the values of all public members to their values in the database.

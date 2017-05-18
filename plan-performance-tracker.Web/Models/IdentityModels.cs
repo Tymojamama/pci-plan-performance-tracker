@@ -10,6 +10,7 @@ namespace PlanPerformance.Web.Models
     public class ApplicationUser : IdentityUser
     {
         public string Hometown { get; set; }
+        private bool IsAdmin = false;
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {

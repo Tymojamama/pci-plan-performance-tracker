@@ -151,10 +151,23 @@ namespace PlanPerformance.Business.Entities
         /// <summary>
         /// Deletes the record from the database.
         /// </summary>
-        public void DeleteRecordFromDatabase()
+        public void DeleteRecordFromDatabase(Guid modifiedBy)
         {
-            SqlCrud.Delete(this.Id);
-            ExistingRecord = false;
+            var userDih = new DataIntegrationHub.Business.Entities.User(modifiedBy);
+            var planPerformanceSecurityRole = new DataIntegrationHub.Business.Entities.SecurityRole(new Guid("7FE92C15-05A4-4848-851D-C9B5319CAA0B"));
+            var userDihSecurityRoles = DataIntegrationHub.Business.Entities.UserSecurityRole.GetAssociatedFromUser(userDih);
+            var userDihPlanPerformanceRoleCount = userDihSecurityRoles.FindAll(x => x.SecurityRoleId == planPerformanceSecurityRole.SecurityRoleId).Count();
+            var userIsAuthorized = userDihPlanPerformanceRoleCount > 0;
+
+            if (userIsAuthorized)
+            {
+                SqlCrud.Delete(this.Id);
+                ExistingRecord = false;
+            }
+            else
+            {
+                throw new Exception("You are not authorized to modify records in the plan performance app.");
+            }
         }
 
         /// <summary>
@@ -317,19 +330,32 @@ namespace PlanPerformance.Business.Entities
         /// <param name="modifiedBy">Used to set the ModifiedBy value of the record.</param>
         private void Update(Guid modifiedBy)
         {
-            SqlCrud.ClearColumns();
-            RegisteredColumns.Clear();
-            RegisterMembers();
+            var userDih = new DataIntegrationHub.Business.Entities.User(modifiedBy);
+            var planPerformanceSecurityRole = new DataIntegrationHub.Business.Entities.SecurityRole(new Guid("7FE92C15-05A4-4848-851D-C9B5319CAA0B"));
+            var userDihSecurityRoles = DataIntegrationHub.Business.Entities.UserSecurityRole.GetAssociatedFromUser(userDih);
+            var userDihPlanPerformanceRoleCount = userDihSecurityRoles.FindAll(x => x.SecurityRoleId == planPerformanceSecurityRole.SecurityRoleId).Count();
+            var userIsAuthorized = userDihPlanPerformanceRoleCount > 0;
 
-            foreach (ColumnTuple columnTuple in RegisteredColumns)
+            if (userIsAuthorized)
             {
-                SqlCrud.AddColumn(columnTuple.Name, columnTuple.Value);
-            }
+                SqlCrud.ClearColumns();
+                RegisteredColumns.Clear();
+                RegisterMembers();
 
-            SqlCrud.AddColumn("ModifiedBy", modifiedBy);
-            SqlCrud.AddColumn("ModifiedOn", DateTime.Now);
-            SqlCrud.AddColumn("StateCode", this.StateCode);
-            SqlCrud.Update(this.Id);
+                foreach (ColumnTuple columnTuple in RegisteredColumns)
+                {
+                    SqlCrud.AddColumn(columnTuple.Name, columnTuple.Value);
+                }
+
+                SqlCrud.AddColumn("ModifiedBy", modifiedBy);
+                SqlCrud.AddColumn("ModifiedOn", DateTime.Now);
+                SqlCrud.AddColumn("StateCode", this.StateCode);
+                SqlCrud.Update(this.Id);
+            }
+            else
+            {
+                throw new Exception("You are not authorized to modify records in the plan performance app.");
+            }
         }
 
         /// <summary>
@@ -338,21 +364,34 @@ namespace PlanPerformance.Business.Entities
         /// <param name="createdBy">Used to set the CreatedBy value of the record.</param>
         private void Insert(Guid createdBy)
         {
-            SqlCrud.ClearColumns();
-            RegisteredColumns.Clear();
-            RegisterMembers();
+            var userDih = new DataIntegrationHub.Business.Entities.User(createdBy);
+            var planPerformanceSecurityRole = new DataIntegrationHub.Business.Entities.SecurityRole(new Guid("7FE92C15-05A4-4848-851D-C9B5319CAA0B"));
+            var userDihSecurityRoles = DataIntegrationHub.Business.Entities.UserSecurityRole.GetAssociatedFromUser(userDih);
+            var userDihPlanPerformanceRoleCount = userDihSecurityRoles.FindAll(x => x.SecurityRoleId == planPerformanceSecurityRole.SecurityRoleId).Count();
+            var userIsAuthorized = userDihPlanPerformanceRoleCount > 0;
 
-            foreach (ColumnTuple columnTuple in RegisteredColumns)
+            if (userIsAuthorized)
             {
-                SqlCrud.AddColumn(columnTuple.Name, columnTuple.Value);
-            }
+                SqlCrud.ClearColumns();
+                RegisteredColumns.Clear();
+                RegisterMembers();
 
-            SqlCrud.AddColumn("ModifiedBy", createdBy);
-            SqlCrud.AddColumn("ModifiedOn", DateTime.Now);
-            SqlCrud.AddColumn("CreatedBy", createdBy);
-            SqlCrud.AddColumn("CreatedOn", DateTime.Now);
-            SqlCrud.AddColumn("StateCode", this.StateCode);
-            SqlCrud.Create(this.Id);
+                foreach (ColumnTuple columnTuple in RegisteredColumns)
+                {
+                    SqlCrud.AddColumn(columnTuple.Name, columnTuple.Value);
+                }
+
+                SqlCrud.AddColumn("ModifiedBy", createdBy);
+                SqlCrud.AddColumn("ModifiedOn", DateTime.Now);
+                SqlCrud.AddColumn("CreatedBy", createdBy);
+                SqlCrud.AddColumn("CreatedOn", DateTime.Now);
+                SqlCrud.AddColumn("StateCode", this.StateCode);
+                SqlCrud.Create(this.Id);
+            }
+            else
+            {
+                throw new Exception("You are not authorized to insert records in the plan performance app.");
+            }
         }
 
         /// <summary>
