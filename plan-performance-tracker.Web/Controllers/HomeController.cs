@@ -99,7 +99,7 @@ namespace PlanPerformance.Web.Controllers
             var plan = new PlanPerformance.Business.Entities.Plan(id);
             plan.ActionPlan = actionPlan;
 
-            var userDih = DataIntegrationHub.Business.Entities.User.AllUsers().Find(x => x.EmailAddress == User.Identity.Name);
+            var userDih = DataIntegrationHub.Business.Entities.User.AllUsers().Find(x => x.EmailAddress.ToUpper() == User.Identity.Name.ToUpper());
             plan.SaveRecordToDatabase(userDih.UserId);
 
             return View();
@@ -163,7 +163,7 @@ namespace PlanPerformance.Web.Controllers
             goalMetric.Value = Decimal.Parse(value);
             goalMetric.ValueAsOf = DateTime.Parse(valueAsOf);
 
-            var userDih = DataIntegrationHub.Business.Entities.User.AllUsers().Find(x => x.EmailAddress == User.Identity.Name);
+            var userDih = DataIntegrationHub.Business.Entities.User.AllUsers().Find(x => x.EmailAddress.ToUpper() == User.Identity.Name.ToUpper());
             goalMetric.SaveRecordToDatabase(userDih.UserId);
 
             return View();
@@ -182,7 +182,7 @@ namespace PlanPerformance.Web.Controllers
             {
                 goalMetric = new PlanPerformance.Business.Entities.GoalMetric(Guid.Parse(id));
 
-                var userDih = DataIntegrationHub.Business.Entities.User.AllUsers().Find(x => x.EmailAddress == User.Identity.Name);
+                var userDih = DataIntegrationHub.Business.Entities.User.AllUsers().Find(x => x.EmailAddress.ToUpper() == User.Identity.Name.ToUpper());
                 goalMetric.DeleteRecordFromDatabase(userDih.UserId);
             }
 
@@ -247,7 +247,7 @@ namespace PlanPerformance.Web.Controllers
             planMetric.ValueAsOf = DateTime.Parse(valueAsOf);
             planMetric.IsBaseline = bool.Parse(isBaseline);
 
-            var userDih = DataIntegrationHub.Business.Entities.User.AllUsers().Find(x => x.EmailAddress == User.Identity.Name);
+            var userDih = DataIntegrationHub.Business.Entities.User.AllUsers().Find(x => x.EmailAddress.ToUpper() == User.Identity.Name.ToUpper());
             planMetric.SaveRecordToDatabase(userDih.UserId);
 
             return View();
@@ -265,7 +265,7 @@ namespace PlanPerformance.Web.Controllers
             else
             {
                 planMetric = new PlanPerformance.Business.Entities.PlanMetric(Guid.Parse(id));
-                var userDih = DataIntegrationHub.Business.Entities.User.AllUsers().Find(x => x.EmailAddress == User.Identity.Name);
+                var userDih = DataIntegrationHub.Business.Entities.User.AllUsers().Find(x => x.EmailAddress.ToUpper() == User.Identity.Name.ToUpper());
                 planMetric.DeleteRecordFromDatabase(userDih.UserId);
             }
 
@@ -321,7 +321,7 @@ namespace PlanPerformance.Web.Controllers
             goal.Team = team;
             goal.Frequency = frequency;
 
-            var userDih = DataIntegrationHub.Business.Entities.User.AllUsers().Find(x => x.EmailAddress == User.Identity.Name);
+            var userDih = DataIntegrationHub.Business.Entities.User.AllUsers().Find(x => x.EmailAddress.ToUpper() == User.Identity.Name.ToUpper());
             goal.SaveRecordToDatabase(userDih.UserId);
 
             return View();
@@ -340,7 +340,7 @@ namespace PlanPerformance.Web.Controllers
             {
                 goal = new PlanPerformance.Business.Entities.Goal(Guid.Parse(id));
 
-                var userDih = DataIntegrationHub.Business.Entities.User.AllUsers().Find(x => x.EmailAddress == User.Identity.Name);
+                var userDih = DataIntegrationHub.Business.Entities.User.AllUsers().Find(x => x.EmailAddress.ToUpper() == User.Identity.Name.ToUpper());
                 goal.DeleteRecordFromDatabase(userDih.UserId);
             }
 
