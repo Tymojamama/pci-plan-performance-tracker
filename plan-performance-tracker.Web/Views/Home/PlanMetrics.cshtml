@@ -33,18 +33,33 @@
 
     <table class="data-table">
         <tr class="data-table-header">
-            <td class="data-table-header-cell">Name</td>
-            <td class="data-table-header-cell">Type</td>
-            <td class="data-table-header-cell">Team</td>
-            <td class="data-table-header-cell">Frequency</td>
+            <td class="data-table-header-cell">Goal</td>
+            <td class="data-table-header-cell">Plan</td>
+            <td class="data-table-header-cell">Value</td>
+            <td class="data-table-header-cell">Value As Of</td>
         </tr>
         @foreach (var planMetric in planMetrics)
         {
+            var goalName = "";
+            var planName = "";
+
+            var plan = plans.Find(x => x.PlanId == planMetric.PlanId);
+            if (plan != null)
+            {
+                planName = plan.Name;
+            }
+
+            var goal = goals.Find(x => x.Id == planMetric.GoalId);
+            if (goal != null)
+            {
+                goalName = goal.Name;
+            }
+            
             <tr class="data-table-row" onclick="goal_OnClick('@planMetric.Id.ToString()')">
-                <td>@goals.Find(x => x.Id == planMetric.GoalId).Name</td>
-                <td>@plans.Find(x => x.PlanId == planMetric.PlanId).Name</td>
+                <td>@goalName</td>
+                <td>@planName</td>
                 <td>@planMetric.Value</td>
-                <td>@planMetric.ValueAsOf</td>
+                <td>@planMetric.ValueAsOf.ToString("MM/dd/yyyy")</td>
             </tr>
         }
     </table>
